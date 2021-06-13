@@ -7,44 +7,66 @@
     tools:context=".AddContactActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_new_contact"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <EditText
             android:id="@+id/edt_first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
             android:hint="@string/first_name"
+            android:inputType="text"
             android:paddingHorizontal="5dp"
-            android:inputType="text" />
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey" />
 
 
         <EditText
             android:id="@+id/edt_last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginTop="20dp"
             android:hint="@string/last_name"
-           />
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey" />
+
+        <EditText
+            android:id="@+id/edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/first_name"
+            android:inputType="text"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey" />
+
+
+        <EditText
+            android:id="@+id/edt_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/last_name"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey" />
+
+        <EditText
+            android:id="@+id/edt_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/last_name"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey" />
 
         <Button
             android:id="@+id/btnAddContact"
@@ -54,6 +76,29 @@
             android:backgroundTint="@color/purple_200"
             android:text="@string/add_contact" />
 
+
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_new_contact"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

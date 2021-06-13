@@ -41,15 +41,27 @@ public class Contact {
     @ColumnInfo(name = "phone_number")
     private int phoneNumber;
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @ColumnInfo(name = "address")
+    private String address;
+
     @Ignore
     public Contact() {
     }
 
-    public Contact(@NonNull String firstName,String lastName, String email, int phoneNumber) {
+    public Contact(@NonNull String firstName, String lastName, String email, int phoneNumber, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
     @NonNull
@@ -84,7 +96,6 @@ public class Contact {
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 
 
 }
