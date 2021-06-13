@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">contact_ranjana_C093794_android</string>
+    <string name="add_new_contact">Add New Contact</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="add_contact">Add Contact</string>
+</resources>
