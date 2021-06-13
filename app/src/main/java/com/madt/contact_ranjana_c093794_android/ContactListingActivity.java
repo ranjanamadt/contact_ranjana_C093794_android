@@ -66,6 +66,7 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
         contactViewModel.getAllContacts().observe(this, contacts -> {
             // set adapter
             rcContactsAdapter = new RecyclerViewAdapter(contacts, this, this);
+
             rcContacts.setAdapter(rcContactsAdapter);
         });
     }

@@ -44,7 +44,7 @@ public class AddContactActivity extends AppCompatActivity {
                     edtFirstName.setText(contact.getFirstName());
                     edtLastName.setText(contact.getLastName());
                     edtEmail.setText(contact.getEmail());
-                    edtPhoneNumber.setText(contact.getPhoneNumber());
+                    edtPhoneNumber.setText(contact.getPhoneNumber()+" ");
                     edtAddress.setText(contact.getAddress());
                 }
             });
