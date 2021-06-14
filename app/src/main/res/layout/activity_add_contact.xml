@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/img_back">
 
         <EditText
             android:id="@+id/edt_first_name"
@@ -25,6 +25,10 @@
             android:layout_marginTop="20dp"
             android:hint="@string/first_name"
             android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:padding="12dp"
+            android:background="@drawable/black_stroke_bg"
             android:paddingHorizontal="5dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey" />
@@ -36,6 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/last_name"
+            android:padding="12dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:maxLength="50"
+            android:background="@drawable/black_stroke_bg"
             android:textColor="@color/black"
             android:textColorHint="@color/grey" />
 
@@ -45,7 +54,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/email"
-            android:inputType="text"
+            android:padding="12dp"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:background="@drawable/black_stroke_bg"
             android:paddingHorizontal="5dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey" />
@@ -58,15 +71,24 @@
             android:layout_marginTop="20dp"
             android:hint="@string/phone_number"
             android:inputType="phone"
+            android:padding="12dp"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:background="@drawable/black_stroke_bg"
             android:textColor="@color/black"
             android:textColorHint="@color/grey" />
 
         <EditText
             android:id="@+id/edt_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginTop="20dp"
-            android:hint="@string/enter_address"
+            android:hint="@string/address"
+            android:padding="12dp"
+            android:gravity="top|left"
+            android:maxLines="4"
+            android:maxLength="50"
+            android:background="@drawable/black_stroke_bg"
             android:textColor="@color/black"
             android:textColorHint="@color/grey" />
 
@@ -75,17 +97,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@color/white"
             android:backgroundTint="@color/purple_200"
-            android:text="@string/add_contact" />
+            android:text="@string/save" />
 
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_back"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -99,8 +123,9 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/img_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.39"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/img_back"
+        app:layout_constraintTop_toTopOf="@+id/img_back" />
 </androidx.constraintlayout.widget.ConstraintLayout>

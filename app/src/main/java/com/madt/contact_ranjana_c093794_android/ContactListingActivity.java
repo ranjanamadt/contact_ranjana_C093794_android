@@ -14,6 +14,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,6 +35,7 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
     private RecyclerView rcContacts;
     private RecyclerViewAdapter rcContactsAdapter;
     public static final String CONTACT_ID = "contact_id";
+    public TextView txtNoContactFound;
     private Contact deletedContact;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
                 .create(ContactViewModel.class);
 
         rcContacts = findViewById(R.id.rcContacts);
+        txtNoContactFound = findViewById(R.id.txtNoFound);
+
         rcContacts.setHasFixedSize(true);
         rcContacts.setLayoutManager(new LinearLayoutManager(this));
 
@@ -49,13 +54,11 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(ContactListingActivity.this, AddContactActivity.class);
-            /*startActivityForResult(intent, ADD_EMPLOYEE_REQUEST_CODE);*/
-            // the following approach as startActivityForResult is deprecated
-            launcher.launch(intent);
+            startActivity(intent);
 
         });
 
-        // attach the itemTouchHelper to my recyclerView
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(rcContacts);
     }
@@ -64,10 +67,14 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
     protected void onResume() {
         super.onResume();
         contactViewModel.getAllContacts().observe(this, contacts -> {
-            // set adapter
-            rcContactsAdapter = new RecyclerViewAdapter(contacts, this, this);
 
-            rcContacts.setAdapter(rcContactsAdapter);
+            if(contacts.isEmpty()){
+                txtNoContactFound.setVisibility(View.VISIBLE);
+            }else {
+                txtNoContactFound.setVisibility(View.INVISIBLE);
+                rcContactsAdapter = new RecyclerViewAdapter(contacts, this, this);
+                rcContacts.setAdapter(rcContactsAdapter);
+            }
         });
     }
 
@@ -124,22 +131,5 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
         }
     };
 
-    ActivityResultLauncher<Intent> launcher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                  //  String name = data.getStringExtra(AddContactActivity.NAME_REPLY);
-                  //  String salary = data.getStringExtra(AddContactActivity.SALARY_REPLY);
-                   // String department = data.getStringExtra(AddContactActivity.DEPARTMENT_REPLY);
-                    // getting the current date
-                  /*  Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
-                    String joiningDate = sdf.format(cal.getTime());
-
-                    Contact contact = new Contact(name, department, joiningDate, Double.parseDouble(salary));
-                    contactViewModel.insert(contact);*/
-                }
-            });
 
 }

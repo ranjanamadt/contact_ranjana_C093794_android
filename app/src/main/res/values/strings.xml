@@ -7,5 +7,7 @@
     <string name="no_contacts_found">No Contacts Found</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone Number</string>
-    <string name="enter_address">Enter Address</string>
+    <string name="address">Address</string>
+    <string name="save">Save</string>
+    <string name="my_contacts">My Contacts</string>
 </resources>

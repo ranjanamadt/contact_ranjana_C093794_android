@@ -3,6 +3,7 @@ package com.madt.contact_ranjana_c093794_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,11 @@ public class AddContactActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_email);
         edtPhoneNumber = findViewById(R.id.edt_phone_number);
         edtAddress = findViewById(R.id.edt_address);
-        
+
+        findViewById(R.id.img_back).setOnClickListener(v -> {
+            finish();
+        });
+
         
         if (getIntent().hasExtra(ContactListingActivity.CONTACT_ID)) {
             contactId = getIntent().getIntExtra(ContactListingActivity.CONTACT_ID, 0);
@@ -44,7 +49,7 @@ public class AddContactActivity extends AppCompatActivity {
                     edtFirstName.setText(contact.getFirstName());
                     edtLastName.setText(contact.getLastName());
                     edtEmail.setText(contact.getEmail());
-                    edtPhoneNumber.setText(contact.getPhoneNumber()+" ");
+                    edtPhoneNumber.setText(contact.getPhoneNumber()+"");
                     edtAddress.setText(contact.getAddress());
                 }
             });
@@ -65,7 +70,7 @@ public class AddContactActivity extends AppCompatActivity {
                     contact.setFirstName(edtFirstName.getText().toString().trim());
                     contact.setLastName(edtLastName.getText().toString().trim());
                     contact.setEmail(edtEmail.getText().toString().trim());
-                    contact.setPhoneNumber(Integer.parseInt(edtFirstName.getText().toString().trim()));
+                    contact.setPhoneNumber(Long.parseLong(edtPhoneNumber.getText().toString().trim()));
                     contact.setAddress(edtAddress.getText().toString().trim());
                     contactViewModel.update(contact);
                 } else {
@@ -103,31 +108,31 @@ public class AddContactActivity extends AppCompatActivity {
             edtFirstName.setError("Please enter First Name");
             edtFirstName.requestFocus();
             isValid = false;
-            return isValid;
+
         }
         if (lastName.isEmpty()) {
             edtLastName.setError("Please enter Last Name");
             edtLastName.requestFocus();
             isValid = false;
-            return isValid;
+
         }
         if (email.isEmpty()) {
             edtEmail.setError("Please enter Email");
             edtEmail.requestFocus();
             isValid = false;
-            return isValid;
+
         }
         if (phoneNumber.isEmpty()) {
             edtPhoneNumber.setError("Please enter Phone Number");
             edtPhoneNumber.requestFocus();
             isValid = false;
-            return isValid;
+
         }
         if (address.isEmpty()) {
             edtAddress.setError("Please enter address");
             edtAddress.requestFocus();
             isValid = false;
-            return isValid;
+
         }
 
 

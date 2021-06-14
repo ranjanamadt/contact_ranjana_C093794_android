@@ -39,7 +39,7 @@ public class Contact {
     private String email;
 
     @ColumnInfo(name = "phone_number")
-    private int phoneNumber;
+    private long phoneNumber;
 
     public String getAddress() {
         return address;
@@ -56,7 +56,7 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(@NonNull String firstName, String lastName, String email, int phoneNumber, String address) {
+    public Contact(@NonNull String firstName, String lastName, String email, long phoneNumber, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -89,11 +89,11 @@ public class Contact {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
