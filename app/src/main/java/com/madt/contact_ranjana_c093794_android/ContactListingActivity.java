@@ -123,6 +123,7 @@ public class ContactListingActivity extends AppCompatActivity implements Contact
             contactList.addAll(contacts);
             setContactsCount(contacts.size());
 
+            rcContactsAdapter = new ContactsListingAdapter(contacts, this, this,this);
             // If contacts list is empty
             if (contacts.isEmpty()) {
                 txtNoContactFound.setVisibility(View.VISIBLE);
@@ -131,7 +132,6 @@ public class ContactListingActivity extends AppCompatActivity implements Contact
             } else {
                 txtNoContactFound.setVisibility(View.INVISIBLE);
                 rcContacts.setVisibility(View.VISIBLE);
-                rcContactsAdapter = new ContactsListingAdapter(contacts, this, this,this);
                 rcContacts.setAdapter(rcContactsAdapter);
             }
         });
