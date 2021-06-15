@@ -10,4 +10,6 @@
     <string name="address">Address</string>
     <string name="save">Save</string>
     <string name="my_contacts">My Contacts</string>
+    <string name="update_contact">Update Contact</string>
+    <string name="update">Update</string>
 </resources>

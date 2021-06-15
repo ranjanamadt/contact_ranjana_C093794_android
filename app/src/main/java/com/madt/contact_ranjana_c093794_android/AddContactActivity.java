@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,12 +35,14 @@ public class AddContactActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_email);
         edtPhoneNumber = findViewById(R.id.edt_phone_number);
         edtAddress = findViewById(R.id.edt_address);
+        TextView txtLblTitle = findViewById(R.id.lblTitle);
+        Button btnAdd = findViewById(R.id.btnAddContact);
 
         findViewById(R.id.img_back).setOnClickListener(v -> {
             finish();
         });
 
-        
+
         if (getIntent().hasExtra(ContactListingActivity.CONTACT_ID)) {
             contactId = getIntent().getIntExtra(ContactListingActivity.CONTACT_ID, 0);
             Log.d("TAG", "onCreate: " + contactId);
@@ -49,20 +52,21 @@ public class AddContactActivity extends AppCompatActivity {
                     edtFirstName.setText(contact.getFirstName());
                     edtLastName.setText(contact.getLastName());
                     edtEmail.setText(contact.getEmail());
-                    edtPhoneNumber.setText(contact.getPhoneNumber()+"");
+                    edtPhoneNumber.setText(contact.getPhoneNumber() + "");
                     edtAddress.setText(contact.getAddress());
                 }
             });
 
-            //TextView label = findViewById(R.id.label);
+
             isEditing = true;
-            //label.setText(R.string.update_label);
-            //addUpdateButton.setText(R.string.update_contact_btn_text);
+            txtLblTitle.setText(R.string.update_contact);
+            btnAdd.setText(R.string.update);
+
         }
 
         findViewById(R.id.btnAddContact).setOnClickListener(v -> {
 
-            if (validateFields()){
+            if (validateFields()) {
 
                 if (isEditing) {
                     Contact contact = new Contact();
@@ -74,7 +78,7 @@ public class AddContactActivity extends AppCompatActivity {
                     contact.setAddress(edtAddress.getText().toString().trim());
                     contactViewModel.update(contact);
                 } else {
-                    
+
                     Contact contact = new Contact(
                             edtFirstName.getText().toString().trim(),
                             edtLastName.getText().toString().trim(),

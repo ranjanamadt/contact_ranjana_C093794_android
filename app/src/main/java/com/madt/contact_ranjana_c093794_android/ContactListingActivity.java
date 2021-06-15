@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.madt.contact_ranjana_c093794_android.adapter.RecyclerViewAdapter;
+import com.madt.contact_ranjana_c093794_android.adapter.ContactsListingAdapter;
 import com.madt.contact_ranjana_c093794_android.model.Contact;
 import com.madt.contact_ranjana_c093794_android.model.ContactViewModel;
 
@@ -31,16 +29,16 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class ContactListingActivity extends AppCompatActivity implements RecyclerViewAdapter.OnContactLongPressListener, RecyclerViewAdapter.OnEditContactClickListener {
+public class ContactListingActivity extends AppCompatActivity implements ContactsListingAdapter.OnContactLongPressListener, ContactsListingAdapter.OnEditContactClickListener {
     private ContactViewModel contactViewModel;
 
     private RecyclerView rcContacts;
-    private RecyclerViewAdapter rcContactsAdapter;
+    private ContactsListingAdapter rcContactsAdapter;
     public static final String CONTACT_ID = "contact_id";
     public TextView txtNoContactFound;
-    private Contact deletedContact;
+    private Contact deletedContact;  // Variable to keep deleted contact
     private List<Contact> contactList = new ArrayList<>();
-    public TextView txtContactsCount;
+    public TextView txtContactsCount; //TextView to show count of contacts
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +47,17 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
         contactViewModel = new ViewModelProvider.AndroidViewModelFactory(this.getApplication())
                 .create(ContactViewModel.class);
 
+
         rcContacts = findViewById(R.id.rcContacts);
         txtNoContactFound = findViewById(R.id.txtNoFound);
         txtContactsCount = findViewById(R.id.txtContactCount);
-
-        // getting search view of our item.
         SearchView searchView = findViewById(R.id.searchView);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+        // Setup Recycler View Layout Manager
+        rcContacts.setHasFixedSize(true);
+        rcContacts.setLayoutManager(new LinearLayoutManager(this));
+
 
         // below line is to call set on query text listener method.
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -65,18 +68,15 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // inside on query text change method we are
-                // calling a method to filter our recycler view.
+                //Calling a method to filter Contact List
                 filter(newText);
                 return false;
             }
         });
 
-        rcContacts.setHasFixedSize(true);
-        rcContacts.setLayoutManager(new LinearLayoutManager(this));
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+       // Click on Add contact Button
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(ContactListingActivity.this, AddContactActivity.class);
             startActivity(intent);
@@ -90,52 +90,54 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
 
     private void filter(String text) {
         // creating a new array list to filter our data.
-        ArrayList<Contact> filteredlist = new ArrayList<>();
+        ArrayList<Contact> filteredList = new ArrayList<>();
 
         // running a for loop to compare elements.
         for (Contact item : contactList) {
-            // checking if the entered string matched with any item of our recycler view.
+            // checking if the entered string matched with first name or last name  of contact list
             if (item.getFirstName().toLowerCase().contains(text.toLowerCase())||item.getLastName().toLowerCase().contains(text.toLowerCase())) {
-                // if the item is matched we are
-                // adding it to our filtered list.
-                filteredlist.add(item);
+                // if the item is matched , adding it to filtered contact list
+                filteredList.add(item);
             }
         }
-        if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
+        if (filteredList.isEmpty()) {
+            // if no item is added in filtered list displaying  no contact found.
             txtNoContactFound.setVisibility(View.VISIBLE);
         } else {
-            // at last we are passing that filtered
-            // list to our adapter class.
+            // if we have  contacts added in filtered list
             txtNoContactFound.setVisibility(View.INVISIBLE);
-
         }
-        setContactsCount(filteredlist.size());
-        rcContactsAdapter.filterList(filteredlist);
+        // displaying contacts count
+        setContactsCount(filteredList.size());
+        // passing that filtered list to adapter class.
+        rcContactsAdapter.filterList(filteredList);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("in","resumer");
+
+        // getting updated contacts on resume and updating list
         contactViewModel.getAllContacts().observe(this, contacts -> {
             contactList.clear();
             contactList.addAll(contacts);
+            setContactsCount(contacts.size());
+
+            // If contacts list is empty
             if (contacts.isEmpty()) {
                 txtNoContactFound.setVisibility(View.VISIBLE);
                 rcContacts.setVisibility(View.INVISIBLE);
-                setContactsCount(contacts.size());
+
             } else {
                 txtNoContactFound.setVisibility(View.INVISIBLE);
                 rcContacts.setVisibility(View.VISIBLE);
-                setContactsCount(contacts.size());
-                rcContactsAdapter = new RecyclerViewAdapter(contacts, this, this,this);
+                rcContactsAdapter = new ContactsListingAdapter(contacts, this, this,this);
                 rcContacts.setAdapter(rcContactsAdapter);
             }
         });
     }
 
+    // Method to set contacts count
     private void setContactsCount(int size) {
         txtContactsCount.setText("(" + size + ")");
     }
@@ -152,14 +154,17 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
             Contact contact = contactViewModel.getAllContacts().getValue().get(position);
             switch (direction) {
                 case ItemTouchHelper.LEFT:
+                    // confirmation dialog to ask user before delete contact
                     AlertDialog.Builder builder = new AlertDialog.Builder(ContactListingActivity.this);
                     builder.setTitle("Are you sure you want to delete this contact?");
                     builder.setPositiveButton("Yes", (dialog, which) -> {
                         deletedContact = contact;
                         contactViewModel.delete(contact);
 
+                        // Display snackbar with deleted contact name and giving option to undo also
                         Snackbar.make(rcContacts, deletedContact.getFirstName() + deletedContact.getLastName()+ " is deleted!", Snackbar.LENGTH_LONG)
                                 .setAction("Undo", v -> contactViewModel.insert(deletedContact)).show();
+
                     });
                     builder.setNegativeButton("No", (dialog, which) -> rcContactsAdapter.notifyDataSetChanged());
                     AlertDialog alertDialog = builder.create();
@@ -216,29 +221,33 @@ public class ContactListingActivity extends AppCompatActivity implements Recycle
     }
 
     private void sendEmail(String toEmail) {
+
+        // Intent to send user to Email app
         Intent mailIntent = new Intent(Intent.ACTION_SEND);
         mailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{ toEmail});
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
         mailIntent.putExtra(Intent.EXTRA_TEXT, "");
-
 
         mailIntent.setType("message/rfc822");
         startActivity(Intent.createChooser(mailIntent, "Choose an Email client :"));
     }
 
     private void sendSMS(long phoneNumber) {
+        // Intent to send user to Message app
         Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNumber));
         smsIntent.putExtra("sms_body", "");
         startActivity(smsIntent);
     }
 
     private void makeACall(long phoneNumber) {
+        // Intent to send user to Call app
             String dial = "tel:" + phoneNumber;
             startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
     }
 
     @Override
     public void onEditContactClick(int position) {
+
         Contact contact = contactViewModel.getAllContacts().getValue().get(position);
         Intent intent = new Intent(ContactListingActivity.this, AddContactActivity.class);
         intent.putExtra(CONTACT_ID, contact.getId());
